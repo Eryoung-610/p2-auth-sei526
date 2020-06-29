@@ -73,6 +73,6 @@ module.exports = function (sequelize, DataTypes) {
     // Before new record
     // Hash password
     // User associations
-}
+    
 // Take inputed password and compare to hashed password in user table
 // Hash new password to adsd to user table
