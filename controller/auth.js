@@ -50,6 +50,9 @@ router.post('/login', function (req, res, next) {
         // if no user authenticated
         if (!user) {
             req.flash('error', 'Invalid username or password');
+            req.session.save(function() {
+                return res.redirect('/auth/login')
+            })
             // save to our user session no username
             // redirect our user to try logging in again
         }
@@ -60,8 +63,13 @@ router.post('/login', function (req, res, next) {
 
         req.login(function (user, error) {
             // if error move to error
+            if(error) next(error);
             // if success flash success message
+            req.flash('success','You are validated and logged in')
             // if success save session and redirect user
+            req.session.save(function() {
+                return res.redirect('/')
+            })
         })
     })
 })
