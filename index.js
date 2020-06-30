@@ -8,6 +8,7 @@ const session = require("express-session");
 const flash = require("flash");
 const passport = require('./config/ppConfig')
 const db = require('./models')
+const isLoggedIn = require('./middleware/isLoggedIn');
 
 // app setup
 const app = Express();
@@ -49,6 +50,10 @@ app.use((req,res,next) => {
 app.get('/', function(req, res) {
     // check to see if user logged in
     res.render('index');
+})
+
+app.get('/profile', isLoggedIn, (req, res) => {
+    res.render('profile');
 })
 
 // include auth controller
