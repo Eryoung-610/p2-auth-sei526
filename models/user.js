@@ -1,17 +1,16 @@
-// User model declaration
-// Define use case
-// Import any required libraries
+// user model decleration
 'use strict';
-const bcrypt = require('bcrypt')
-// Declare user model format
-module.exports = function (sequelize, DataTypes) {
-    // Define user object
+const bcrypt = require('bcrypt');
+
+// declare user model format
+module.exports = function(sequelize, DataTypes) {
+    // define user object
     const user = sequelize.define('user', {
         email: {
             type: DataTypes.STRING,
             validate: {
                 isEmail: {
-                    msg: 'Invalid Email Address'
+                    msg: 'Invalid email address'
                 }
             }
         },
@@ -29,50 +28,36 @@ module.exports = function (sequelize, DataTypes) {
             validate: {
                 len: {
                     args: [8, 99],
-                    msg: 'Password is of incorrect length. Double check character number'
+                    msg: 'Password is of incorrect length. Double check character number.'
                 }
             }
         }
     }, {
         hooks: {
             // before record creation
-            beforeCreate: function (createdUser, options) {
+            beforeCreate: function(createdUser, options) {
                 if (createdUser && createdUser.password) {
-                    // Take inputed password
-                    // Hash it
-                    // Return new password as new password for new record
-
                     let hash = bcrypt.hashSync(createdUser.password, 12);
                     createdUser.password = hash;
                 }
             }
         }
     });
-    user.associate = function (models) {
-        // Associations here
+    user.associate = function(models) {
+        // TODO: any user associations you want
     }
 
-    // Valid password declaration to validate user password at login
+    // validPassword definition to validate password at user login
     user.prototype.validPassword = function(passwordTyped) {
-       return bcrypt.compareSync(passwordTyped,this.password);
+        return bcrypt.compareSync(passwordTyped, this.password);
     }
-
-    // remove password before serialization of user object
+    
+    // remove password before any serialization of User object
     user.prototype.toJSON = function() {
         let userData = this.get();
         delete userData.password;
         return userData;
     }
-
+    
     return user;
 };
-    // email
-    // name
-    // password
-    // Hook
-    // Before new record
-    // Hash password
-    // User associations
-    
-// Take inputed password and compare to hashed password in user table
-// Hash new password to adsd to user table

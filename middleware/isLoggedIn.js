@@ -1,9 +1,8 @@
-const e = require("express")
-
-module.exports = function(req,res,next) {
+// write a function we are going to use as middleware
+module.exports = function(req, res, next) {
     if (!req.user) {
-        req.flash('error','You must be logged in to view this page')
-        req.redirect('/auth/login')
+        req.flash('error', 'You must be logged in to view this page.');
+        res.redirect('/auth/login');
     } else {
         next();
     }
